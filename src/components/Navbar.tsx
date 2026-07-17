@@ -1,8 +1,28 @@
+"use client";
+
 import Link from "next/link";
 import NavLinkContainer from "./NavLinkContainer";
 import Button from "./Button";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function Navbar() {
+  const { data: session, isPending } = authClient.useSession();
+  const user = session?.user;
+
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push("/");
+        },
+      },
+    });
+  };
+
   return (
     <div className="navbar border-b border-black py-4">
       <div className="navbar-start">
@@ -36,14 +56,42 @@ export default function Navbar() {
       <div className="navbar-center hidden lg:flex">
         <NavLinkContainer />
       </div>
-      <div className="felx flex-col md:flex-row gap-2 navbar-end">
-        <Button text="Login" type="primary" task="hyperlink" href="/login" />
-        <Button
-          text="Register"
-          type="secondary"
-          task="hyperlink"
-          href="/register"
-        />
+      <div className="flex flex-col md:flex-row gap-2 navbar-end">
+        {isPending ? (
+          <></>
+        ) : session ? (
+          <>
+            <div className="h-20 w-20 rounded-full flex items-center justify-center overflow-hidden border border-gray-200">
+              <Image
+                alt={user!.name}
+                height={80}
+                width={80}
+                src={user!.image ?? ""}
+              />
+            </div>
+            <Button
+              text="Logout"
+              type="risk"
+              task="button"
+              onClick={handleLogout}
+            />
+          </>
+        ) : (
+          <>
+            <Button
+              text="Login"
+              type="primary"
+              task="hyperlink"
+              href="/login"
+            />
+            <Button
+              text="Register"
+              type="secondary"
+              task="hyperlink"
+              href="/register"
+            />
+          </>
+        )}
       </div>
     </div>
   );

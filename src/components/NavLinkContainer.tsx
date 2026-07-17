@@ -1,3 +1,6 @@
+"use client";
+
+import { authClient } from "@/lib/auth-client";
 import NavLink from "./NavLink";
 
 interface NavLinkContainerProps {
@@ -5,6 +8,9 @@ interface NavLinkContainerProps {
 }
 
 export default function NavLinkContainer(props: NavLinkContainerProps) {
+  const { data: session } = authClient.useSession();
+  const user = session?.user;
+
   return (
     <ul
       tabIndex={props.isMobile ? "-1" : "undefined"}
@@ -17,9 +23,13 @@ export default function NavLinkContainer(props: NavLinkContainerProps) {
       <NavLink text="Home" href="/" />
       <NavLink text="Wallboards" href="/wallboards" />
       <NavLink text="Reviews" href="/customer-reviews" />
-      <NavLink text="Rate Us" href="/rate-us" />
-      <NavLink text="Add Wallboards" href="/add-wallboards" />
-      <NavLink text="Manage Wallboards" href="/manage-wallboards" />
+      {user && user.role === "customer" && <NavLink text="Rate Us" href="/rate-us" />}
+      {user && user.role === "admin" && (
+        <>
+          <NavLink text="Add Wallboards" href="/add-wallboards" />
+          <NavLink text="Manage Wallboards" href="/manage-wallboards" />
+        </>
+      )}
     </ul>
   );
 }

@@ -9,7 +9,7 @@ interface SectionWrapperProps {
 
 export default function SectionWrapper(props: SectionWrapperProps) {
   return (
-    <section className="flex flex-col mt-24 min-h-screen">
+    <section className="flex flex-col py-24 min-h-screen">
       <PageHeading text={props.heading} />
       <PageSubHeading text={props.subheading} />
 

@@ -1,4 +1,4 @@
-"use form"
+"use client"
 
 import Button from "@/components/Button";
 import FormErrorMessage from "@/components/FormErrorMessage";

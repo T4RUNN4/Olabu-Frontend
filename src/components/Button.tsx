@@ -6,9 +6,9 @@ interface ButtonsProps {
 }
 
 const classNames = {
-  primary: "btn text-lg bg-linear-to-r from-[#2d0b3e] to-[#68198e] text-white",
-  secondary: "btn btn-ghost text-gray-400 text-lg border-2 border-gray-300",
-  risk: "btn btn-error text-lg text-white",
+  primary: "btn bg-linear-to-r from-[#2d0b3e] to-[#68198e] text-white",
+  secondary: "btn btn-ghost text-gray-400 border-2 border-gray-300",
+  risk: "btn btn-error text-white",
 };
 
 export default function Button(props: ButtonsProps) {

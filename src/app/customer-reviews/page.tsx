@@ -34,18 +34,18 @@ export default function CustomerReview() {
       heading="Customer Reviews"
       subheading="What our beloved customers says about US"
     >
-      <p className="text-xs text-gray-600">
-        All of this reviews are collected from customers inbox/story/post. We
-        hide customers identity unless they share it publicly. We recieve
-        reviews in Bengali and English both languages. But they are translated
-        here better integration.
-      </p>
-
       <div className="flex flex-col justify-center gap-4 mt-8">
         {reviews.map((review) => (
             <CustomerCard key={review.id} name={review.name} gender={review.gender} date={review.date} review={review.review} />
         ))}
       </div>
+
+      <p className="text-xs text-gray-600 mt-20">
+        All of this reviews are collected from customers. We
+        hide customers identity unless they share it publicly. We recieve
+        reviews in Bengali and English both languages. But they are translated
+        here better integration.
+      </p>
     </SectionWrapper>
   );
 }

@@ -1,6 +1,7 @@
 import Button from "./Button";
 
 interface WallboardProps {
+    id: string;
     image: string;
     name: string;
     code: string;
@@ -29,8 +30,8 @@ export default function Wallboard(props: WallboardProps) {
       </div>
 
       <div className="flex items-center gap-2 mt-8">
-        <Button text="Add to Cart" type="primary" btnType="button" />
-        <Button text="View Details" type="secondary" btnType="button" />
+        <Button text="View Details" type="primary" task="hyperlink" href={`/wallboards/${props.id}`} />
+        {/* <Button text="View Details" type="secondary" btnType="button" /> */}
       </div>
     </div>
   );

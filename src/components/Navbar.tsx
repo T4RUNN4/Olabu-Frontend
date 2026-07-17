@@ -37,8 +37,13 @@ export default function Navbar() {
         <NavLinkContainer />
       </div>
       <div className="felx flex-col md:flex-row gap-2 navbar-end">
-        <Button text="Login" type="primary" btnType="button" />
-        <Button text="Register" type="secondary" btnType="button" />
+        <Button text="Login" type="primary" task="hyperlink" href="/login" />
+        <Button
+          text="Register"
+          type="secondary"
+          task="hyperlink"
+          href="/register"
+        />
       </div>
     </div>
   );

@@ -17,6 +17,7 @@ export default function NavLinkContainer(props: NavLinkContainerProps) {
       <NavLink text="Home" href="/" />
       <NavLink text="Wallboards" href="/wallboards" />
       <NavLink text="Reviews" href="/customer-reviews" />
+      <NavLink text="Rate Us" href="/rate-us" />
       <NavLink text="Add Wallboards" href="/add-wallboards" />
       <NavLink text="Manage Wallboards" href="/manage-wallboards" />
     </ul>

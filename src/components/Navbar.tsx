@@ -58,7 +58,7 @@ export default function Navbar() {
       </div>
       <div className="flex flex-col md:flex-row gap-2 navbar-end">
         {isPending ? (
-          <></>
+          <span className="loading loading-spinner loading-md"></span>
         ) : session ? (
           <>
             <div className="h-20 w-20 rounded-full flex items-center justify-center overflow-hidden border border-gray-200">

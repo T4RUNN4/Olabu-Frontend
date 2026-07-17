@@ -4,7 +4,10 @@ import Button from "@/components/Button";
 import FormErrorMessage from "@/components/FormErrorMessage";
 import FormLabel from "@/components/FormLabel";
 import SectionWrapper from "@/components/SectionWrapper";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { toast } from "react-toastify";
 
 type Inputs = {
   name: string;
@@ -14,19 +17,38 @@ type Inputs = {
 };
 
 export default function Register() {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const { error } = await authClient.signUp.email({
+      ...data,
+    });
+
+    if(!error) {
+      toast.success("Welcome to the OLABU Family");
+      reset();
+      router.push("/")
+    } else {
+      toast.error(error.message);
+    }
+  };
 
   return (
     <SectionWrapper
       heading="Registration Form"
       subheading="Join the OLABU community and place and track your orders"
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="fieldset border-base-300 rounded-box border p-12">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="fieldset border-base-300 rounded-box border p-12"
+      >
         <div className="flex flex-col gap-2 justify-center mb-4">
           <FormLabel text="Full Name" isRequired />
           <input
@@ -68,7 +90,9 @@ export default function Register() {
             placeholder="*****"
             {...register("password", { required: "Password is Required" })}
           />
-          {errors.password && <FormErrorMessage text={errors.password.message} />}
+          {errors.password && (
+            <FormErrorMessage text={errors.password.message} />
+          )}
         </div>
 
         <Button text="Register" type="primary" task="button" btnType="submit" />

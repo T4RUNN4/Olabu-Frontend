@@ -4,7 +4,10 @@ import Button from "@/components/Button";
 import FormErrorMessage from "@/components/FormErrorMessage";
 import FormLabel from "@/components/FormLabel";
 import SectionWrapper from "@/components/SectionWrapper";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { toast } from "react-toastify";
 
 type Inputs = {
   email: string;
@@ -12,12 +15,28 @@ type Inputs = {
 };
 
 export default function Register() {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const { error } = await authClient.signIn.email({
+      ...data,
+    });
+
+    if (!error) {
+      toast.success("Welcome to the OLABU Family");
+      reset();
+      router.push("/");
+    } else {
+      toast.error(error.message);
+    }
+  };
 
   return (
     <SectionWrapper

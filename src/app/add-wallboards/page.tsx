@@ -1,25 +1,48 @@
-"use client"
+"use client";
 
 import Button from "@/components/Button";
 import FormErrorMessage from "@/components/FormErrorMessage";
 import FormLabel from "@/components/FormLabel";
 import SectionWrapper from "@/components/SectionWrapper";
+import { addWallboard } from "@/lib/addWallboards";
+import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { toast } from "react-toastify";
 
 type Inputs = {
   name: string;
   code: string;
   image: string;
   description: string;
+  tags: string;
 };
 
 export default function AddWallboards() {
+  const router = useRouter();
   const {
     register,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const formattedData = {
+      ...data,
+      tags: data.tags.split(",").map((tag) => tag.trim()),
+    };
+
+    const res = await addWallboard(formattedData);
+
+    if (res.acknowledged) {
+      console.log(res);
+      toast.success("Wallboard added to the collection");
+      reset();
+      router.push("/wallboards");
+    } else {
+      toast.error(res);
+    }
+  };
 
   return (
     <SectionWrapper
@@ -76,6 +99,20 @@ export default function AddWallboards() {
           {errors.description && (
             <FormErrorMessage text={errors.description.message} />
           )}
+        </div>
+
+        <div className="flex flex-col gap-2 justify-center mb-4">
+          <FormLabel text="WallBoard Tags" isRequired />
+          <p className="text-sm text-gray-600">Seperate tags by comma</p>
+          <input
+            type="text"
+            className="input w-full focus:border focus:border-gray-500"
+            placeholder="Football, Messi, Sports, Ronaldo"
+            {...register("tags", {
+              required: "Wallboard tags are Required",
+            })}
+          />
+          {errors.tags && <FormErrorMessage text={errors.tags.message} />}
         </div>
 
         <Button

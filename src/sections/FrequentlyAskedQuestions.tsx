@@ -23,8 +23,8 @@ export default function FrequentlyAskedQuestions() {
       subheading="Questions we receive often from our customers"
     >
       <div className="flex flex-col gap-2">
-        {qna.map((each) => (
-          <FAQCard qus={each.qus} ans={each.ans} />
+        {qna.map((each, index) => (
+          <FAQCard key={index} qus={each.qus} ans={each.ans} />
         ))}
       </div>
     </SectionWrapper>

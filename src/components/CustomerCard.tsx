@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { format } from "date-fns";
 
 interface CustomerCardProps {
   image: string;
@@ -19,7 +20,7 @@ export default function CustomerCard(props: CustomerCardProps) {
       </div>
       <div className="flex flex-col">
         <h1 className="text-xl font-semibold">Satisfied Customer</h1>
-        <h2 className="text-sm text-gray-500 mb-4">{props.date}</h2>
+        <h2 className="text-sm text-gray-500 mb-4">{format(props.date, "PPP")}</h2>
         <p>{props.review}</p>
       </div>
     </div>

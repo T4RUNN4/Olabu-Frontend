@@ -1,14 +1,15 @@
 import FeaturedReview from "@/sections/FeaturedReview";
 import FeaturedWallboard from "@/sections/FeaturedWallboards";
 import Stats from "@/sections/Stats";
+import Divider from "../components/Divider";
 
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       <Stats />
-      <hr className="border border-gray-200" />
+      <Divider />
       <FeaturedWallboard />
-      <hr className="border border-gray-200" />
+      <Divider />
       <FeaturedReview />
     </div>
   );

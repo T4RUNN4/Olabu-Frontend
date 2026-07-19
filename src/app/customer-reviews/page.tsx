@@ -4,21 +4,18 @@ import SectionWrapper from "@/components/SectionWrapper";
 export default function CustomerReview() {
   const reviews = [
     {
-      name: "Satisfied Customer",
       date: "June 11, 2026",
       review:
         "The image and board quality is good. Gives a premium vibe. Overally 8.8/10",
       id: "a1"
     },
     {
-      name: "Satisfied Customer",
       date: "June 12, 2026",
       review:
         "Very good quality. Images are really good. I brought some boards previously whch has blurry pictures. But yours are really good in quality.",
       id: "b2"
     },
     {
-      name: "Satisfied Customer",
       date: "June 12, 2026",
       review:
         "Boards are really good in quality. Colors are really vibrant too.",
@@ -42,7 +39,6 @@ export default function CustomerReview() {
         {reviews.map((review) => (
           <CustomerCard
             key={review.id}
-            name={review.name}
             image={
               proflePicture[Math.floor(Math.random() * proflePicture.length)]
             }

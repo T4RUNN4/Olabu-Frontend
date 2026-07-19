@@ -12,6 +12,14 @@ export async function fetchWallboards(): Promise<Wallboard[]> {
   return res.json();
 }
 
+export async function fetchFeaturedWallboards(): Promise<Wallboard[]> {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/wallboards/featured`,
+  );
+  console.log(res);
+  return res.json();
+}
+
 export async function fetchWallboard(id: string): Promise<Wallboard> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/wallboards/${id}`);
 

@@ -1,6 +1,6 @@
 export interface Reviews {
   _id: string;
-  image: string;
+  proflePicture: string;
   CustomerReview: string;
   date: string;
 }

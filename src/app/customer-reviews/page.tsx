@@ -34,7 +34,7 @@ export default async function CustomerReview() {
         {reviews.map((review) => (
           <CustomerCard
             key={review._id}
-            image={review.image}
+            image={review.proflePicture}
             date={review.date}
             review={review.CustomerReview}
           />

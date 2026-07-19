@@ -1,3 +1,9 @@
+import Stats from "@/sections/stats";
+
 export default function Home() {
-  return <div>Hello World!</div>;
+  return (
+    <div className="flex flex-col min-h-screen">
+      <Stats />
+    </div>
+  );
 }

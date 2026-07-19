@@ -8,7 +8,7 @@ export default async function FeaturedReview() {
   const reviews = await fetchFeaturedReviews();
 
   return (
-    <div className="flex flex-col py-24">
+    <section className="flex flex-col py-24">
       <PageHeading text="Featured Review" />
       <PageSubHeading text="Words that touched our hearts from deep inside" />
 
@@ -22,6 +22,6 @@ export default async function FeaturedReview() {
           />
         ))}
       </div>
-    </div>
+    </section>
   );
 }

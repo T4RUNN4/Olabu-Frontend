@@ -16,10 +16,14 @@ export default function Stats() {
     },
   ];
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-24">
+    <section className="grid grid-cols-1 md:grid-cols-3 gap-4 py-24">
       {stats.map((stat, index) => (
-        <StatusCard key={index} heading={stat.heading} subHeading={stat.subHeading} />
+        <StatusCard
+          key={index}
+          heading={stat.heading}
+          subHeading={stat.subHeading}
+        />
       ))}
-    </div>
+    </section>
   );
 }

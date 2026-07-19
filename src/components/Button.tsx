@@ -16,7 +16,7 @@ type ButtonProps =
     };
 
 const classNames = {
-  primary: "btn bg-linear-to-r from-[#2d0b3e] to-[#68198e] text-white",
+  primary: "btn bg-linear-to-r from-[#2d0b3e] to-[#68198e] text-white border-0 shadow-none",
   secondary: "btn btn-ghost text-gray-400 border-2 border-gray-300",
   risk: "btn btn-error text-white",
 };

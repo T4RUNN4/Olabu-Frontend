@@ -2,6 +2,7 @@ import FeaturedReview from "@/sections/FeaturedReview";
 import FeaturedWallboard from "@/sections/FeaturedWallboards";
 import Stats from "@/sections/Stats";
 import Divider from "../components/Divider";
+import FrequentlyAskedQuestions from "@/sections/FrequentlyAskedQuestions";
 
 export default function Home() {
   return (
@@ -11,6 +12,8 @@ export default function Home() {
       <FeaturedWallboard />
       <Divider />
       <FeaturedReview />
+      <Divider />
+      <FrequentlyAskedQuestions />
     </div>
   );
 }

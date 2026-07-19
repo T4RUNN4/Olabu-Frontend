@@ -1,3 +1,4 @@
+import Button from "@/components/Button";
 import SectionWrapper from "@/components/SectionWrapper";
 import Wallboard from "@/components/Wallboard";
 import { fetchFeaturedWallboards } from "@/lib/fetchWallboards";
@@ -21,6 +22,15 @@ export default async function FeaturedWallboard() {
             description={wallboard.description}
           />
         ))}
+      </div>
+
+      <div className="flex items-center justify-center mt-10">
+        <Button
+          text="Explore all Wallboards"
+          type="primary"
+          task="hyperlink"
+          href="/wallboards"
+        />
       </div>
     </SectionWrapper>
   );

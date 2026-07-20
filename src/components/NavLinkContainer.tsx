@@ -13,7 +13,7 @@ export default function NavLinkContainer(props: NavLinkContainerProps) {
 
   return (
     <ul
-      tabIndex={props.isMobile ? "-1" : "undefined"}
+      tabIndex={props.isMobile ? -1 : undefined}
       className={
         props.isMobile
           ? "menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"

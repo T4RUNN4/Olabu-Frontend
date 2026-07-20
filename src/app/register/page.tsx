@@ -3,8 +3,10 @@
 import Button from "@/components/Button";
 import FormErrorMessage from "@/components/FormErrorMessage";
 import FormLabel from "@/components/FormLabel";
+import GoogleLogin from "@/components/GoogleLogin";
 import SectionWrapper from "@/components/SectionWrapper";
 import { authClient } from "@/lib/auth-client";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -96,6 +98,14 @@ export default function Register() {
         </div>
 
         <Button text="Register" type="primary" task="button" btnType="submit" />
+
+        <div className="flex flex-col items-center justify-center mt-10">
+          <p className="text-base text-gray-400">
+            Already Registered? <Link href="/login" className="bg-linear-to-r from-[#2d0b3e] to-[#68198e] bg-clip-text text-transparent">Sign-in Now</Link>{" "}
+          </p>
+          <div className="divider">OR</div>
+          <GoogleLogin />
+        </div>
       </form>
     </SectionWrapper>
   );

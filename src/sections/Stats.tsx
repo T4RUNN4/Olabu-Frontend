@@ -16,7 +16,7 @@ export default function Stats() {
     },
   ];
   return (
-    <section className="grid grid-cols-1 md:grid-cols-3 gap-4 py-24">
+    <section className="grid grid-cols-3 gap-10 py-24">
       {stats.map((stat, index) => (
         <StatusCard
           key={index}

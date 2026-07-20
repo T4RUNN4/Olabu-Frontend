@@ -20,9 +20,14 @@ export default function AIChat() {
       content: "👋 Hello! I'm your AI shopping assistant.",
     },
   ]);
-  const { register, handleSubmit, reset } = useForm<FormValues>();
+  const { register, handleSubmit, reset, watch } = useForm<FormValues>({
+    defaultValues: {
+      message: "",
+    },
+  });
 
   const onSubmit = async ({ message }: FormValues) => {
+    console.log("Current:", watch("message"));
     if (!message) return;
 
     // Show user's message immediately

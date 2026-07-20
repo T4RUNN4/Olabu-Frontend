@@ -56,7 +56,7 @@ export default function Navbar() {
       <div className="navbar-center hidden lg:flex">
         <NavLinkContainer />
       </div>
-      <div className="flex flex-col md:flex-row gap-2 navbar-end">
+      <div className="flex gap-2 navbar-end">
         {isPending ? (
           <span className="loading loading-spinner loading-md"></span>
         ) : session ? (

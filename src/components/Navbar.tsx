@@ -61,7 +61,7 @@ export default function Navbar() {
           <span className="loading loading-spinner loading-md"></span>
         ) : session ? (
           <>
-            <div className="h-20 w-20 rounded-full flex items-center justify-center overflow-hidden border border-gray-200">
+            <div className="h-14 w-14 md:h-20 md:w-20 rounded-full flex items-center justify-center overflow-hidden border border-gray-200">
               <Image
                 alt={user!.name}
                 height={80}
@@ -84,12 +84,14 @@ export default function Navbar() {
               task="hyperlink"
               href="/login"
             />
-            <Button
-              text="Register"
-              type="secondary"
-              task="hyperlink"
-              href="/register"
-            />
+            <div className="hidden md:flex">
+              <Button
+                text="Register"
+                type="secondary"
+                task="hyperlink"
+                href="/register"
+              />
+            </div>
           </>
         )}
       </div>

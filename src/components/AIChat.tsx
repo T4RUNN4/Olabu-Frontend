@@ -2,17 +2,63 @@
 
 import { Bot, SendHorizontal, X } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
+
+type Message = {
+  role: "user" | "assistant";
+  content: string;
+};
 
 type FormValues = {
   message: string;
 };
 
 export default function AIChat() {
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      role: "assistant",
+      content: "👋 Hello! I'm your AI shopping assistant.",
+    },
+  ]);
   const { register, handleSubmit, reset } = useForm<FormValues>();
 
-  const onSubmit = ({ message }: FormValues) => {
-    console.log(message);
+  const onSubmit = async ({ message }: FormValues) => {
+    if (!message) return;
+
+    // Show user's message immediately
+    setMessages((prev) => [
+      ...prev,
+      {
+        role: "user",
+        content: message,
+      },
+    ]);
+
     reset();
+
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/chat`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message,
+        }),
+      },
+    );
+
+    const data = await response.json();
+
+    // Show AI reply
+    setMessages((prev) => [
+      ...prev,
+      {
+        role: "assistant",
+        content: data.reply,
+      },
+    ]);
   };
 
   return (
@@ -55,24 +101,25 @@ export default function AIChat() {
             </label>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-5 space-y-2 text-sm">
-            <div className="chat chat-start">
-              <div className="chat-bubble bg-linear-to-r from-[#2d0b3e] to-[#68198e] text-white">
-                👋 Hello! I'm your AI shopping assistant.
+          <div className="flex-1 overflow-y-auto p-5 space-y-3">
+            {messages.map((message, index) => (
+              <div
+                key={index}
+                className={`chat ${
+                  message.role === "user" ? "chat-end" : "chat-start"
+                }`}
+              >
+                <div
+                  className={`chat-bubble ${
+                    message.role === "assistant"
+                      ? "bg-linear-to-r from-[#2d0b3e] to-[#68198e] text-white"
+                      : "chat-bubble-neutral"
+                  }`}
+                >
+                  {message.content}
+                </div>
               </div>
-            </div>
-
-            <div className="chat chat-start">
-              <div className="chat-bubble">
-                Ask me things like:
-                <ul className="list-disc ml-5 mt-2 space-y-1">
-                  <li>Which wallboard should I buy?</li>
-                  <li>Compare Messi vs Ronaldo</li>
-                  <li>Which design is best for a gift?</li>
-                  <li>Tell me about the Neymar wallboard.</li>
-                </ul>
-              </div>
-            </div>
+            ))}
           </div>
 
           <form

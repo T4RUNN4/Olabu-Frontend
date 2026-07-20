@@ -31,6 +31,7 @@ export default function Register() {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const { error } = await authClient.signUp.email({
       ...data,
+      role: "customer",
     });
 
     if(!error) {

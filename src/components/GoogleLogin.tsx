@@ -1,6 +1,14 @@
+import { authClient } from "@/lib/auth-client";
+
 export default function GoogleLogin() {
+  const signIn = async () => {
+    const data = await authClient.signIn.social({
+      provider: "google",
+    });
+  };
+
   return (
-    <button type="button" className="btn bg-white text-black border-[#e5e5e5]">
+    <button onClick={signIn} type="button" className="btn bg-white text-black border-[#e5e5e5]">
       <svg
         aria-label="Google logo"
         width="16"

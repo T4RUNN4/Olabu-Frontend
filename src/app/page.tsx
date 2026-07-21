@@ -4,7 +4,6 @@ import Stats from "@/sections/Stats";
 import Divider from "../components/Divider";
 import FrequentlyAskedQuestions from "@/sections/FrequentlyAskedQuestions";
 import Hero from "@/sections/Hero";
-import AIChat from "../components/AIChat";
 
 export default function Home() {
   return (
@@ -18,7 +17,6 @@ export default function Home() {
       <FeaturedReview />
       <Divider />
       <FrequentlyAskedQuestions />
-      <AIChat />
     </div>
   );
 }

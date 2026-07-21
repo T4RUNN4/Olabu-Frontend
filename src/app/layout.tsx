@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ToastContainer } from "react-toastify";
+import AIChat from "@/components/AIChat";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -31,6 +32,7 @@ export default function RootLayout({
         {children}
         <Footer />
         <ToastContainer />
+        <AIChat />
       </body>
     </html>
   );

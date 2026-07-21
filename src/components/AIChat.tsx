@@ -20,6 +20,8 @@ export default function AIChat() {
       content: "👋 Hello! I'm your AI shopping assistant.",
     },
   ]);
+  const [isTyping, setIsTyping] = useState(false);
+
   const { register, handleSubmit, reset, watch } = useForm<FormValues>({
     defaultValues: {
       message: "",
@@ -27,7 +29,6 @@ export default function AIChat() {
   });
 
   const onSubmit = async ({ message }: FormValues) => {
-    console.log("Current:", watch("message"));
     if (!message) return;
 
     // Show user's message immediately
@@ -40,30 +41,32 @@ export default function AIChat() {
     ]);
 
     reset();
+    setIsTyping(true);
 
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/chat`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/chat`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ message }),
         },
-        body: JSON.stringify({
-          message,
-        }),
-      },
-    );
+      );
 
-    const data = await response.json();
+      const data = await response.json();
 
-    // Show AI reply
-    setMessages((prev) => [
-      ...prev,
-      {
-        role: "assistant",
-        content: data.reply,
-      },
-    ]);
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: data.reply,
+        },
+      ]);
+    } finally {
+      setIsTyping(false);
+    }
   };
 
   return (
@@ -125,6 +128,14 @@ export default function AIChat() {
                 </div>
               </div>
             ))}
+
+            {isTyping && (
+              <div className="chat chat-start">
+                <div className="chat-bubble bg-linear-to-r from-[#2d0b3e] to-[#68198e] text-white">
+                  <span className="loading loading-dots loading-sm"></span>
+                </div>
+              </div>
+            )}
           </div>
 
           <form

@@ -45,10 +45,6 @@ export default function AIChat() {
         role: "user",
         content: message,
       },
-      {
-        role: "assistant",
-        content: "",
-      },
     ]);
 
     reset();
@@ -80,6 +76,14 @@ export default function AIChat() {
         if (firstChunk) {
           setIsTyping(false);
           firstChunk = false;
+
+          setMessages((prev) => [
+            ...prev,
+            {
+              role: "assistant",
+              content: "",
+            },
+          ]);
         }
 
         const chunk = decoder.decode(value);
@@ -176,7 +180,7 @@ export default function AIChat() {
                 }`}
               >
                 <div
-                  className={`chat-bubble ${
+                  className={`chat-bubble text-justify ${
                     message.role === "assistant"
                       ? "bg-linear-to-r from-[#2d0b3e] to-[#68198e] text-white"
                       : "chat-bubble-neutral"
@@ -187,7 +191,7 @@ export default function AIChat() {
               </div>
             ))}
 
-            {isTyping && (
+            {isTyping && messages[messages.length - 1]?.content !== "" && (
               <div className="chat chat-start">
                 <div className="chat-bubble bg-linear-to-r from-[#2d0b3e] to-[#68198e] text-white">
                   <span className="loading loading-dots loading-sm"></span>

@@ -174,7 +174,7 @@ export default function AddWallboards() {
           {errors.tags && <FormErrorMessage text={errors.tags.message} />}
         </div>
 
-        <div className="flex flex-row gap-4 items-center justify-center mt-8">
+        <div className="flex flex-col md:flex-row gap-4 items-center justify-center mt-8">
           <Button
             text={generating ? "Generating..." : "Generate AI Content"}
             type="secondary"

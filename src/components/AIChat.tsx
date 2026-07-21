@@ -14,20 +14,69 @@ type FormValues = {
   message: string;
 };
 
-export default function AIChat() {
-  const chatEndRef = useRef<HTMLDivElement>(null);
-  const suggestions = [
-    "What makes OLABU different?",
-    "What finishing OLABU offers?",
-  ];
+const SUGGESTION_MARKER = "|||SUGGESTIONS|||";
 
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: "assistant",
-      content: "👋 Hello! I'm your AI shopping assistant.",
-    },
-  ]);
+function parseAIResponse(text: string) {
+  const index = text.indexOf(SUGGESTION_MARKER);
+
+  if (index === -1) {
+    return {
+      answer: text,
+      suggestions: [],
+    };
+  }
+
+  const answer = text.slice(0, index).trim();
+
+  const suggestionText = text.slice(index + SUGGESTION_MARKER.length).trim();
+
+  return {
+    answer,
+    suggestions: suggestionText
+      .split("\n")
+      .map((s) => s.trim())
+      .filter(Boolean),
+  };
+}
+
+export default function AIChat() {
+  const getVisitorId = () => {
+    let id = localStorage.getItem("olabu-chat-id");
+
+    if (!id) {
+      id = crypto.randomUUID();
+      localStorage.setItem("olabu-chat-id", id);
+    }
+
+    return id;
+  };
+
+  const chatEndRef = useRef<HTMLDivElement>(null);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+
+  const [messages, setMessages] = useState<Message[]>([]);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("olabu-chat-history");
+
+    if (saved) {
+      setMessages(JSON.parse(saved));
+    } else {
+      setMessages([
+        {
+          role: "assistant",
+          content: "👋 Hello! I'm your OLABU shopping assistant.",
+        },
+      ]);
+    }
+  }, []);
   const [isTyping, setIsTyping] = useState(false);
+
+  useEffect(() => {
+    const limited = messages.slice(-30);
+
+    localStorage.setItem("olabu-chat-history", JSON.stringify(limited));
+  }, [messages]);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({
@@ -35,7 +84,7 @@ export default function AIChat() {
     });
   }, [messages, isTyping]);
 
-  const { register, handleSubmit, reset, watch } = useForm<FormValues>({
+  const { register, handleSubmit, reset } = useForm<FormValues>({
     defaultValues: {
       message: "",
     },
@@ -43,6 +92,8 @@ export default function AIChat() {
 
   const onSubmit = async ({ message }: FormValues) => {
     if (!message.trim()) return;
+
+    setSuggestions([]);
 
     setMessages((prev) => [
       ...prev,
@@ -64,9 +115,10 @@ export default function AIChat() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-  message,
-  history: messages,
-}),
+            message,
+            history: messages,
+            visitorId: getVisitorId(),
+          }),
         },
       );
 
@@ -99,30 +151,42 @@ export default function AIChat() {
         for (const char of chunk) {
           assistantMessage += char;
 
+          const { answer, suggestions } = parseAIResponse(assistantMessage);
+
           setMessages((prev) => {
             const updated = [...prev];
 
             updated[updated.length - 1] = {
               role: "assistant",
-              content: assistantMessage,
+              content: answer,
             };
 
             return updated;
           });
 
+          if (suggestions.length > 0) {
+            setSuggestions(suggestions);
+          }
+
           await new Promise((resolve) => setTimeout(resolve, 25));
         }
+
+        const { answer, suggestions } = parseAIResponse(assistantMessage);
 
         setMessages((prev) => {
           const updated = [...prev];
 
           updated[updated.length - 1] = {
             role: "assistant",
-            content: assistantMessage,
+            content: answer,
           };
 
           return updated;
         });
+
+        if (suggestions.length > 0) {
+          setSuggestions(suggestions);
+        }
       }
     } catch (error) {
       console.error(error);

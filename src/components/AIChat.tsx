@@ -63,7 +63,10 @@ export default function AIChat() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ message }),
+          body: JSON.stringify({
+  message,
+  history: messages,
+}),
         },
       );
 

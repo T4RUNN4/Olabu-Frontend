@@ -23,6 +23,7 @@ export default function NavLinkContainer(props: NavLinkContainerProps) {
       <NavLink text="Home" href="/" />
       <NavLink text="Wallboards" href="/wallboards" />
       <NavLink text="Reviews" href="/customer-reviews" />
+      <NavLink text="About Us" href="/about-us" />
       {user && user.role === "customer" && <NavLink text="Rate Us" href="/rate-us" />}
       {user && user.role === "admin" && (
         <>

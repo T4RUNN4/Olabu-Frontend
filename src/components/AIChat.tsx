@@ -3,6 +3,7 @@
 import { Bot, SendHorizontal, X } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useEffect, useRef } from "react";
 
 type Message = {
   role: "user" | "assistant";
@@ -14,6 +15,7 @@ type FormValues = {
 };
 
 export default function AIChat() {
+  const chatEndRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
@@ -22,6 +24,12 @@ export default function AIChat() {
   ]);
   const [isTyping, setIsTyping] = useState(false);
 
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }, [messages, isTyping]);
+
   const { register, handleSubmit, reset, watch } = useForm<FormValues>({
     defaultValues: {
       message: "",
@@ -29,14 +37,17 @@ export default function AIChat() {
   });
 
   const onSubmit = async ({ message }: FormValues) => {
-    if (!message) return;
+    if (!message.trim()) return;
 
-    // Show user's message immediately
     setMessages((prev) => [
       ...prev,
       {
         role: "user",
         content: message,
+      },
+      {
+        role: "assistant",
+        content: "",
       },
     ]);
 
@@ -55,13 +66,60 @@ export default function AIChat() {
         },
       );
 
-      const data = await response.json();
+      const reader = response.body!.getReader();
+      const decoder = new TextDecoder();
+
+      let assistantMessage = "";
+      let firstChunk = true;
+
+      while (true) {
+        const { done, value } = await reader.read();
+
+        if (done) break;
+
+        if (firstChunk) {
+          setIsTyping(false);
+          firstChunk = false;
+        }
+
+        const chunk = decoder.decode(value);
+
+        for (const char of chunk) {
+          assistantMessage += char;
+
+          setMessages((prev) => {
+            const updated = [...prev];
+
+            updated[updated.length - 1] = {
+              role: "assistant",
+              content: assistantMessage,
+            };
+
+            return updated;
+          });
+
+          await new Promise((resolve) => setTimeout(resolve, 25));
+        }
+
+        setMessages((prev) => {
+          const updated = [...prev];
+
+          updated[updated.length - 1] = {
+            role: "assistant",
+            content: assistantMessage,
+          };
+
+          return updated;
+        });
+      }
+    } catch (error) {
+      console.error(error);
 
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
-          content: data.reply,
+          content: "Sorry, I couldn't process that.",
         },
       ]);
     } finally {
@@ -136,6 +194,8 @@ export default function AIChat() {
                 </div>
               </div>
             )}
+
+            <div ref={chatEndRef} />
           </div>
 
           <form

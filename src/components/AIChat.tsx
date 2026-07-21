@@ -16,6 +16,11 @@ type FormValues = {
 
 export default function AIChat() {
   const chatEndRef = useRef<HTMLDivElement>(null);
+  const suggestions = [
+    "What makes OLABU different?",
+    "What finishing OLABU offers?",
+  ];
+
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
@@ -200,6 +205,22 @@ export default function AIChat() {
             )}
 
             <div ref={chatEndRef} />
+          </div>
+
+          <div className="flex flex-col mt-3 px-8">
+            {suggestions.map((prompt) => (
+              <button
+                key={prompt}
+                className="btn btn-ghost text-xs"
+                onClick={() =>
+                  onSubmit({
+                    message: prompt,
+                  })
+                }
+              >
+                {prompt}
+              </button>
+            ))}
           </div>
 
           <form
